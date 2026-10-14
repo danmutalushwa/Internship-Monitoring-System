@@ -1,8 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Internship Monitoring System — Frontend Client
+
+This repository contains the web-based frontend client for the **Internship Monitoring System**, originally conceptualized and engineered during my internship tenure at **Uruti Hub**. It functions as the primary visual and user-interaction layer, connecting directly to our dedicated NestJS backend services.
+
+---
+
+## Tech Stack & Architecture
+
+The user interface balances efficient rendering speeds with modern styling conventions using:
+
+- **Framework:** Next.js (App Router architecture)
+- **Styling:** Tailwind CSS (for custom utility-first UI configurations)
+- **Design Asset:** Geist Font optimization family (optimized via `next/font`)
+- **Core Communications:** RESTful API bindings targeting the backend microservice layer
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Prerequisites
+
+Ensure you have Node.js installed on your machine. You will also need the backend services running concurrently to resolve functional operational states.
+
+### 2. Installation
+
+Navigate to your frontend directory and install the necessary dependencies:
+
+```bash
+npm install
+```
+
+### 3. Running the Local Development Server
+
+Boot up the development script with your preferred node package runtime engine:
 
 ```bash
 npm run dev
@@ -14,23 +43,22 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) inside your web browser to interact with the responsive interface.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Structural Overview
 
-## Learn More
+- `app/` — Houses pages, components, and unified layout routing paradigms.
+- `app/lecturer/reports/page.tsx` — Specialized administrative view reporting metrics for mentors/lecturers.
+- `public/` — Static assets, icons, and globally shared media files.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Strategic Roadmap (Upcoming Architecture Changes)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This client reflects the **v1.0 (Uruti Hub Legacy Release)** implementation. Future enhancements scheduled on the project pipeline include:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **UI Refresh:** Overhauling design patterns into a cleaner component framework.
+- **State Management Optimization:** Upgrading contextual data streams between Next.js and the NestJS controller instances.
+- **Deepened AI Interfaces:** Maximizing real-time telemetry streaming driven by local Ollama AI endpoints.

@@ -2,97 +2,69 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Internship Monitoring System — Backend Core
 
-## Description
+This repository contains the enterprise-grade RESTful API service for the **Internship Monitoring System**, originally developed during my internship at **Uruti Hub**. It provides structural data persistence, access controls, business logic handling, and local AI analytical integrations.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## Architecture & Core Technologies
 
-```bash
-$ npm install
-```
+The backend microservice handles relational data tracking and security layers using:
 
-## Compile and run the project
+- **Framework:** NestJS (TypeScript-based progressive Node.js architecture)
+- **Database Layer:** TypeORM with fully assertive type-safe entity mappings (`user.entity.ts`)
+- **Database Engine:** SQLite (configured locally for quick, portable deployment presets)
+- **Intelligence Layer:** Ollama AI integration for context-aware internship telemetry and metrics analysis
+
+---
+
+## Getting Started
+
+### 1. Prerequisites
+
+Ensure you have Node.js and your local Ollama AI engine instance initialized on your server environment.
+
+### 2. Project Setup
+
+Navigate to the backend directory and install the required workspace dependencies:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3. Compile and Run the Server
+
+Run the application locally using standard or active watch scripts:
 
 ```bash
-# unit tests
-$ npm run test
+# development mode
+npm run start
 
-# e2e tests
-$ npm run test:e2e
+# watch mode (auto-reloads on file saves)
+npm run start:dev
 
-# test coverage
-$ npm run test:cov
+# production build mode
+npm run start:prod
 ```
 
-## Deployment
+Once initialized, the API microservice will boot up securely on its assigned port.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Structural Highlights
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+- `src/users/` — Explicit user entity schemas (`user.entity.ts`), data decorators, services, and routing controllers.
+- `tsconfig.json` — Modern configuration running clean `nodenext` modules without deprecated legacy resolution options.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## Rebuild Roadmap (Upcoming Refactoring)
 
-Check out a few resources that may come in handy when working with NestJS:
+This build preserves the **v1.0 (Uruti Hub Legacy Release)** backend engine. The upcoming architectural overhaul will focus on:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Prisma Migration:** Transitioning our ORM layer from TypeORM to Prisma for enhanced database query handling.
+- **Extended Guard Schemes:** Introducing stricter authentication decorators across relational student/lecturer paths.
+- **Streamlined AI Pipelines:** Enhancing the speed of contextual responses delivered by local Ollama engines.
