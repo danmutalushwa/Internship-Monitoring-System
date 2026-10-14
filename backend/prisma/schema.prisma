@@ -1,0 +1,242 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   Int      @id @default(autoincrement())
+  name                 String
+  email                String   @unique
+  password             String
+  role                 RoleType @default(STUDENT)
+  isDeleted            Boolean  @default(false)
+  studentReports       Report[] @relation("StudentReports")
+  reviewedReports      Report[] @relation("ReviewerReports")
+  facultyId            Int?
+  faculty              Faculty? @relation(fields: [facultyId], references: [id])
+  assignedSupervisorId Int?
+  assignedSupervisor   User?    @relation("SupervisorAssignments", fields: [assignedSupervisorId], references: [id])
+  supervisedStudents   User[]   @relation("SupervisorAssignments")
+  supervisedReports    Report[] @relation("SupervisorReports")
+  assignedLecturerId   Int?
+  assignedLecturer     User?    @relation("LecturerAssignments", fields: [assignedLecturerId], references: [id])
+  lecturedStudents     User[]   @relation("LecturerAssignments")
+
+  lastLogin DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+
+  internships   Internship[] @relation("StudentInternships")
+  feedbackGiven Feedback[]   @relation("ReviewerFeedback")
+
+  ReportActivity ReportActivity[]
+  feedbacks      ReportFeedback[] @relation("UserFeedbacks")
+  notifications  Notification[]
+
+  assignedStudents AssignmentLog[] @relation("StudentAssignments")
+  assignedReviews  AssignmentLog[] @relation("ReviewerAssignments")
+  assignedLogs     AssignmentLog[] @relation("DeanAssignments")
+
+  assignedReviewerId Int?
+  assignedReviewer   User?  @relation("ReviewerAssignments", fields: [assignedReviewerId], references: [id])
+  reviewedStudents   User[] @relation("ReviewerAssignments")
+  aiLogs             AiLog[]
+}
+
+model Report {
+  id        Int          @id @default(autoincrement())
+  title     String
+  content   String
+  summary   String?
+  type      String
+  fileUrl   String?
+  parentId  String?
+  feedback  String?
+  status    ReportStatus @default(PENDING)
+  student   User         @relation("StudentReports", fields: [studentId], references: [id])
+  studentId Int
+
+  reviewedBy      Int?
+  reviewer        User?            @relation("ReviewerReports", fields: [reviewedBy], references: [id])
+  facultyId       Int?
+  faculty         Faculty?         @relation(fields: [facultyId], references: [id])
+  escalated       Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  ReportActivity  ReportActivity[]
+  feedbacks       ReportFeedback[] @relation("ReportFeedbacks")
+  generalFeedback Feedback[]       @relation("GeneralFeedbacks")
+  supervisorId    Int?
+  supervisor      User?            @relation("SupervisorReports", fields: [supervisorId], references: [id])
+  internshipId    Int?
+  internship      Internship?      @relation("InternshipReports", fields: [internshipId], references: [id])
+
+  aiLogs          AiLog[]
+  aiCache         AiCache[]
+}
+
+model ReportActivity {
+  id        Int      @id @default(autoincrement())
+  reportId  Int
+  report    Report   @relation(fields: [reportId], references: [id])
+  actorId   Int
+  actor     User     @relation(fields: [actorId], references: [id])
+  action    String // e.g.  "VIEWED", "COMMENTED", "UPDATED"
+  timestamp DateTime @default(now())
+}
+
+model ReportFeedback {
+  id         Int          @id @default(autoincrement())
+  reportId   Int
+  reviewerId Int
+  content    String?
+  status     ReportStatus
+  feedback   String
+  parentId   Int?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  report   Report @relation("ReportFeedbacks", fields: [reportId], references: [id])
+  reviewer User   @relation("UserFeedbacks", fields: [reviewerId], references: [id])
+}
+
+model AssignmentLog {
+  id         Int      @id @default(autoincrement())
+  studentId  Int
+  reviewerId Int
+  assignedBy Int
+  createdAt  DateTime @default(now())
+
+  student        User @relation("StudentAssignments", fields: [studentId], references: [id])
+  reviewer       User @relation("ReviewerAssignments", fields: [reviewerId], references: [id])
+  assignedByUser User @relation("DeanAssignments", fields: [assignedBy], references: [id])
+
+  @@index([studentId])
+  @@index([reviewerId])
+  @@index([assignedBy])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  message   String
+  type      String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Settings {
+  id              Int       @id @default(autoincrement())
+  reviewDeadline  DateTime?
+  facultyMappings Json?
+}
+
+model Internship {
+  id         Int              @id @default(autoincrement())
+  studentId  Int
+  company    String
+  department String
+  startDate  DateTime
+  endDate    DateTime
+  supervisor String
+  status     InternshipStatus
+  student    User             @relation("StudentInternships", fields: [studentId], references: [id])
+  reports    Report[]         @relation("InternshipReports")
+}
+
+model Feedback {
+  id         Int          @id @default(autoincrement())
+  reportId   Int
+  reviewerId Int
+  feedback   String
+  status     ReportStatus
+  date       DateTime
+  report     Report       @relation("GeneralFeedbacks", fields: [reportId], references: [id])
+  reviewer   User         @relation("ReviewerFeedback", fields: [reviewerId], references: [id])
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  actor      Int
+  action     String
+  target     String?
+  entityType String?
+  entityId   Int?
+  createdAt  DateTime @default(now())
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  permissions String // stores permissions like ["view_reports", "assign_students"]
+  createdAt   DateTime @default(now())
+  createdBy   Int
+}
+
+model AiLog {
+  id        Int      @id @default(autoincrement())
+  reportId  Int
+  userId    Int
+  type      String
+  prompt    String
+  model     String
+  response  String
+  createdAt DateTime @default(now())
+
+  report Report @relation(fields: [reportId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model AiCache {
+  id        Int      @id @default(autoincrement())
+  type      String   // 'SUMMARY' | 'FEEDBACK'
+  model     String
+  reportId  Int
+  content   String
+  createdAt DateTime @default(now())
+
+  report Report @relation(fields: [reportId], references: [id])
+
+  @@unique([type, model, reportId]) // one cache entry per type/model/report
+}
+
+enum ReportStatus {
+  APPROVED
+  PENDING
+  REJECTED
+  NEEDS_REVISION
+}
+
+enum RoleType {
+  STUDENT
+  SUPERVISOR
+  LECTURER
+  DEAN
+  ADMIN
+  REVIEWER
+}
+
+model Faculty {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  users  User[]
+  Report Report[]
+}
+
+enum InternshipStatus {
+  PENDING
+  ONGOING
+  COMPLETED
+}
